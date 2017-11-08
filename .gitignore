@@ -5,3 +5,4 @@ composer.lock
 .idea/
 #my-swagger-with-refs.yaml
 #my-swagger.yaml
+composer.phar
