@@ -1,11 +1,11 @@
 {
-    "name": "mohrekopp/php-mailhog-client",
+    "name": "thaeny-dev/php-mailhog-client",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "Chinthujan Sehasothyy",
-            "email": "chinthujan.sehasothy@googlemail.com"
+            "name": "Thomas Häny",
+            "email": "dev@haeny.de"
         }
     ],
     "minimum-stability": "dev",
@@ -33,13 +33,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Mohrekopp\\MailHogClient\\": "src/"
+            "ThaenyDev\\MailHogClient\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Mohrekopp\\MailHogClient\\Tests\\Unit\\": "tests/unit/",
-            "Mohrekopp\\MailHogClient\\Tests\\Functional\\": "tests/functional/"
+            "ThaenyDev\\MailHogClient\\Tests\\Unit\\": "tests/unit/",
+            "ThaenyDev\\MailHogClient\\Tests\\Functional\\": "tests/functional/"
         }
     },
     "scripts": {
