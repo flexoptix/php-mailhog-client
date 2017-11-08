@@ -39,6 +39,7 @@ class MailAddress
     {
         $this->relays = $data['Relays'] ?? '';
         $this->mailbox = $data['Mailbox'] ?? '';
+	    $this->mailbox = Message\Message::decode_header($this->mailbox);
         $this->domain = $data['Domain'] ?? '';
         $this->params = $data['Params'] ?? '';
     }

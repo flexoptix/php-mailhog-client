@@ -76,6 +76,9 @@ class Headers
         $this->returnPath = isset($data['Return-Path']) ? $data['Return-Path'][0] : null;
         $this->subject = isset($data['Subject']) ? $data['Subject'][0] : null;
         $this->to = isset($data['To']) ? $data['To'][0] : null;
+
+        $this->subject = Message::decode_header($this->subject);
+	    $this->from = Message::decode_header($this->from);
     }
 
     /**
