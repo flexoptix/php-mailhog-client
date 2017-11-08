@@ -33,13 +33,13 @@
     },
     "autoload": {
         "psr-4": {
-            "ThaenyDev\\MailHogClient\\": "src/"
+            "Mohrekopp\\MailHogClient\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ThaenyDev\\MailHogClient\\Tests\\Unit\\": "tests/unit/",
-            "ThaenyDev\\MailHogClient\\Tests\\Functional\\": "tests/functional/"
+            "Mohrekopp\\MailHogClient\\Tests\\Unit\\": "tests/unit/",
+            "Mohrekopp\\MailHogClient\\Tests\\Functional\\": "tests/functional/"
         }
     },
     "scripts": {
