@@ -9,6 +9,7 @@ use Mohrekopp\MailHogClient\Model\MailAddress;
  * Class Message.
  *
  * @author Chinthujan Sehasothy <chinthu@madco.de>
+ * forked by: Thomas Haeyn <dev@haeny.de>
  */
 class Message
 {
