@@ -103,7 +103,7 @@ class Message
     /**
      * @return mixed
      */
-    public function getCreated(): mixed
+    public function getCreated()
     {
         return $this->created;
     }
