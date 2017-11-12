@@ -12,12 +12,6 @@ use Mohrekopp\MailHogClient\Model\MailAddress;
  */
 class Message
 {
-
-	const DATE_TIME_FORMATS = array(
-		'Y-m-dTH:M:S.fz',
-		'D, d M Y H:M:S O'  // e.g. "Tue, 07 Nov 2017 15:22:02 +0000"
-	);
-
     /**
      * @var string
      */
@@ -39,7 +33,7 @@ class Message
     private $content;
 
     /**
-     * @var \DateTime
+     * @var mixed
      */
     private $created;
 
@@ -64,12 +58,7 @@ class Message
         $this->id = $data['ID'];
         $this->from = new MailAddress($data['From']);
         $this->content = new Content($data['Content']);
-        foreach(self::DATE_TIME_FORMATS as $format) {
-        	if($created = \DateTime::createFromFormat($format, $data['Created'])) {
-		        $this->created = $created;
-		        break;
-	        }
-        }
+	    $this->created = \DateTime::createFromFormat(\DateTime::RFC3339, $data['Created']) ?: $data['Created'];
         $this->mime = $data['MIME'];
         $this->raw = new RawData($data['Raw']);
 
@@ -111,9 +100,9 @@ class Message
     }
 
     /**
-     * @return \DateTime
+     * @return mixed
      */
-    public function getCreated(): \DateTime
+    public function getCreated(): mixed
     {
         return $this->created;
     }
