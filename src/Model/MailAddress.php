@@ -7,6 +7,7 @@ namespace Mohrekopp\MailHogClient\Model;
  * Class MailAddress.
  *
  * @author Chinthujan Sehasothy <chinthu@madco.de>
+ * forked by: Thomas Häny <dev@haeny.de>
  */
 class MailAddress
 {
@@ -39,7 +40,7 @@ class MailAddress
     {
         $this->relays = $data['Relays'] ?? '';
         $this->mailbox = $data['Mailbox'] ?? '';
-	    $this->mailbox = Message\Message::decode_header($this->mailbox);
+	    $this->mailbox = Message\Headers::decode_header($this->mailbox);
         $this->domain = $data['Domain'] ?? '';
         $this->params = $data['Params'] ?? '';
     }
