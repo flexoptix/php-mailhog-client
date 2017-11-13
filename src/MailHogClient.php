@@ -15,102 +15,125 @@ use Mohrekopp\MailHogClient\Model\Messages;
  * Class MailHogClient.
  *
  * @author Chinthujan Sehasothy <chinthu@madco.de>
+ * forked by: Thomas Haeny <dev@haeny.de>
  */
 class MailHogClient
 {
-    /**
-     * @var HttpClient
-     */
-    private $httpClient;
+	/**
+	 * @var HttpClient
+	 */
+	private $httpClient;
 
-    /**
-     * @var MessageFactory
-     */
-    private $messageFactory;
+	/**
+	 * @var MessageFactory
+	 */
+	private $messageFactory;
 
-    /**
-     * @var UriFactory
-     */
-    private $uriFactory;
+	/**
+	 * @var UriFactory
+	 */
+	private $uriFactory;
 
-    /**
-     * @var string
-     */
-    private $baseUrl;
+	/**
+	 * @var string
+	 */
+	private $baseUrl;
 
-    public function __construct(
-        string $baseUrl,
-        HttpClient $httpClient = null,
-        MessageFactory $messageFactory = null,
-        UriFactory $uriFactory = null
-    ) {
-        $this->baseUrl = $baseUrl . '/api/v2';
+	/**
+	 * @var string
+	 */
+	private $apiV1Url;
 
-        if (!$httpClient) {
-            $httpClient = HttpClientDiscovery::find();
-        }
 
-        if (!$messageFactory) {
-            $messageFactory = MessageFactoryDiscovery::find();
-        }
+	public function __construct(
+		string $baseUrl,
+		HttpClient $httpClient = null,
+		MessageFactory $messageFactory = null,
+		UriFactory $uriFactory = null
+	) {
+		$this->baseUrl = $baseUrl . '/api/v2';
+		$this->apiV1Url = $baseUrl . '/api/v1';
 
-        if (!$uriFactory) {
-            $uriFactory = UriFactoryDiscovery::find();
-        }
+		if (!$httpClient) {
+			$httpClient = HttpClientDiscovery::find();
+		}
 
-        $this->httpClient = $httpClient;
-        $this->messageFactory = $messageFactory;
-        $this->uriFactory = $uriFactory;
-    }
+		if (!$messageFactory) {
+			$messageFactory = MessageFactoryDiscovery::find();
+		}
 
-    /**
-     * Retrieve a list of messages
-     *
-     * @param int $start Start index
-     * @param int $limit Number of messages
-     *
-     * @return Messages
-     */
-    public function getMessages(int $start = 0, int $limit = 0)
-    {
-        $uri = $this->uriFactory->createUri($this->baseUrl . '/messages')
-            ->withQuery(http_build_query([
-                'start' => $start,
-                'limit' => $limit,
-            ]))
-        ;
+		if (!$uriFactory) {
+			$uriFactory = UriFactoryDiscovery::find();
+		}
 
-        $request = $this->messageFactory->createRequest('GET', $uri);
+		$this->httpClient = $httpClient;
+		$this->messageFactory = $messageFactory;
+		$this->uriFactory = $uriFactory;
+	}
 
-        $response = $this->httpClient->sendRequest($request);
+	/**
+	 * Retrieve a list of messages
+	 *
+	 * @param int $start Start index
+	 * @param int $limit Number of messages
+	 *
+	 * @return Messages
+	 */
+	public function getMessages(int $start = 0, int $limit = 0)
+	{
+		$uri = $this->uriFactory->createUri($this->baseUrl . '/messages')
+		                        ->withQuery(http_build_query([
+			                        'start' => $start,
+			                        'limit' => $limit,
+		                        ]))
+		;
 
-        return Messages::fromJson($response->getBody()->getContents());
-    }
+		$request = $this->messageFactory->createRequest('GET', $uri);
 
-    /**
-     * Search messages
-     *
-     * @param SearchCriteria $searchCriteria
-     * @param int            $start Start index
-     * @param int            $limit Number of messages
-     *
-     * @return Messages
-     */
-    public function searchMessages(SearchCriteria $searchCriteria, int $start = 0, int $limit = 0)
-    {
-        $uri = $this->uriFactory->createUri($this->baseUrl . '/search')
-            ->withQuery(http_build_query([
-                'kind' => $searchCriteria->getKind(),
-                'query' => $searchCriteria->getQuery(),
-                'start' => $start,
-                'limit' => $limit,
-            ]))
-        ;
+		$response = $this->httpClient->sendRequest($request);
 
-        $request = $this->messageFactory->createRequest('GET', $uri);
+		return Messages::fromJson($response->getBody()->getContents());
+	}
 
-        $response = $this->httpClient->sendRequest($request);
+	/**
+	 * Search messages
+	 *
+	 * @param SearchCriteria $searchCriteria
+	 * @param int            $start Start index
+	 * @param int            $limit Number of messages
+	 *
+	 * @return Messages
+	 */
+	public function searchMessages(SearchCriteria $searchCriteria, int $start = 0, int $limit = 0)
+	{
+		$uri = $this->uriFactory->createUri($this->baseUrl . '/search')
+		                        ->withQuery(http_build_query([
+			                        'kind' => $searchCriteria->getKind(),
+			                        'query' => $searchCriteria->getQuery(),
+			                        'start' => $start,
+			                        'limit' => $limit,
+		                        ]))
+		;
 
-        return Messages::fromJson($response->getBody()->getContents());
-    }
+		$request = $this->messageFactory->createRequest('GET', $uri);
+
+		$response = $this->httpClient->sendRequest($request);
+
+		return Messages::fromJson($response->getBody()->getContents());
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function deleteMessages()
+	{
+		$uri = $this->uriFactory->createUri($this->apiV1Url . '/messages');
+
+		$request = $this->messageFactory->createRequest('DELETE', $uri);
+
+		$response = $this->httpClient->sendRequest($request);
+
+		return ($response->getStatusCode() == 200);
+
+	}
 }
